@@ -49,7 +49,7 @@ module Prawn
 
       # Provides oval shaped text capacity
       #
-      class Oval
+      class Oval #:nodoc:
         def initialize(text,options={})
           Prawn.verify_options([:for, :width, :height, :crop, :at, :center,
                                :overflow, :leading, :kerning, :align], options)
