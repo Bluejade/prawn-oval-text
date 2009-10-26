@@ -27,3 +27,7 @@ where acceptable options are
 - :kerning is a boolean. Defaults to false. Note that a value of true will result in slower width computations.
 
 - :align is :center, :left, or :right. Defaults to :center.
+
+= Example
+
+{http://mindlev.wordpress.com/files/2009/10/oval_text.pdf}[http://mindlev.wordpress.com/files/2009/10/oval_text.pdf]
