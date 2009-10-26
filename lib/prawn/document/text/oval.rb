@@ -41,7 +41,7 @@ module Prawn
       #   
       #     :align is :center, :left, or :right. Defaults to :center
 
-      # +string+ must be UTF8-encoded.
+      # +text+ must be UTF8-encoded.
       #
       def oval_text(text, options)
         Text::Oval.new(text, options.merge(:for => self)).render
