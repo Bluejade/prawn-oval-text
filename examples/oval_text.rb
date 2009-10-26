@@ -29,7 +29,8 @@ Prawn::Document.generate("oval_text.pdf") do
       
       case i
       when 0
-        text = "this is left text " * 25
+        # include gpq to illustrate text with descender
+        text = "this is left text gpq " * 25
         center[0] = options[:width] * 0.5
       when 1
         text = "this is center text " * 25

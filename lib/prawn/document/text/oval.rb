@@ -53,7 +53,9 @@ module Prawn
         def render
           @line_height = @document.font.height
           @ascender = @document.font.ascender
-          @descender = @document.font.descender
+          # font.descender returns a negative value, which confuses
+          # things later on, so get its absolute value
+          @descender = @document.font.descender.abs
           
           # we store the text printed on each line in an array, then
           # join the array with newlines, thereby representing the
@@ -91,7 +93,6 @@ module Prawn
         end
 
         private
-
           
         # Width_limiting_y is the value of y that will be used to compute x;
         # whereas, y is the vertical position of the text baseline
@@ -99,7 +100,6 @@ module Prawn
           return (@baseline_y + @ascender) if above_x_axis?
           (@baseline_y - @descender)
         end
-
 
         # When we are above the x-axis, the top of the ascender is
         # limited by the ellipse. When below the y-axis, the bottom
