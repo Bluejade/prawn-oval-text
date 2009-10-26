@@ -8,7 +8,7 @@ Provides capacity for drawing ellipse and circle shaped text.
 
 then
 
-  text_oval(string, options)
+  oval_text(string, options)
 
 where acceptable options are
 
