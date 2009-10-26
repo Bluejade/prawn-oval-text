@@ -1,0 +1,29 @@
+= Prawn Oval Text
+
+Provides capacity for drawing ellipse and circle shaped text.
+
+= Usage
+
+  require 'prawn/document/text/oval'
+
+then
+
+  text_oval(string, options)
+
+where acceptable options are
+
+  :width and :height are the width and height of the ellipse, respectively. If they are equal, then the shape is a circle.
+
+  :at is a two element array denoting the upper left corner of the bounding box around the ellipse
+
+  :center is a two element array denoting the center of the ellipse. If :center is present, then its value overrides that provided by :at
+
+  :overflow is either :truncate or :ellipses, denoting the behavior when the amount of text exceeds the available space. Defaults to :truncate.
+
+  :crop denotes the space between top of the oval and the first line. It is used to push the starting line lower in the circle when the combination of oval size and font size result in only a few characters being displayable on the very top line.
+
+  :leading is the amount of space between lines. Defaults to 0
+
+  :kerning is a boolean. Defaults to false. Note that a value of true will result in slower width computations
+
+  :align is :center, :left, or :right. Defaults to :center
