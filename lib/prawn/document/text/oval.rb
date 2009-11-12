@@ -24,7 +24,7 @@ module Prawn
       #       ellipse. If :center is present, then its value overrides
       #       that provided by :at
       #
-      #     :overflow is either :truncate or :ellipses, denoting the
+      #     :overflow is :truncate, shrink_to_fit, or :ellipses, denoting the
       #       behavior when the amount of text exceeds the available
       #       space. Defaults to :truncate.
       #
@@ -52,8 +52,9 @@ module Prawn
       class Oval #:nodoc:
         def initialize(text,options={})
           Prawn.verify_options([:for, :width, :height, :crop, :at, :center,
-                               :overflow, :leading, :kerning, :align], options)
-          @text              = text
+                                :overflow, :leading, :kerning, :align, :min_font_size], options)
+          @text              = nil
+          @text_to_print     = text.strip
           @document          = options[:for]
           @horizontal_radius = options[:width] * 0.5
           @vertical_radius   = options[:height] * 0.5
@@ -64,11 +65,27 @@ module Prawn
           @leading           = options[:leading] || 0
           @kerning           = options[:kerning] || false
           @align             = options[:align] || :center
+          @min_font_size     = options[:min_font_size] || 5
         end
 
         attr_reader :text
 
         def render
+          return _render(@text_to_print) unless @overflow == :shrink_to_fit
+
+          # Decrease the font size until the text fits or the min font
+          # size is reached
+          original_font_size = @document.font_size
+          @document.font_size -= 0.5 while (unprinted_text = _render(@text_to_print, false)).length > 0 &&
+                                         @document.font_size > @min_font_size
+          _render(@text_to_print)
+          @document.font_size = original_font_size
+          unprinted_text
+        end
+
+        private
+
+        def _render(text_to_print, do_the_print=true)
           @line_height = @document.font.height
           @ascender = @document.font.ascender
           # font.descender returns a negative value, which confuses
@@ -89,28 +106,28 @@ module Prawn
 
           # while there is text remaining to display, and the bottom
           # of the next line does not extend below the bottom of the ellipse
-          while @text && @text.length > 0 && width_limiting_y > -@vertical_radius
+          while text_to_print && text_to_print.length > 0 && width_limiting_y > -@vertical_radius
             # print a single line, bounded on the left and the right
             # by the ellipse.
             max_line_width = compute_max_line_width(@horizontal_radius, @vertical_radius, width_limiting_y)
-            line_to_print = text_that_will_fit_on_current_line(@text, max_line_width)
+            line_to_print = text_that_will_fit_on_current_line(text_to_print, max_line_width)
 
             # update the remaining text to print to that which was not
             # yet printed. strip so that leading white space doesn't
             # interfere with alignment
-            @text = @text.slice(line_to_print.length..@text.length).lstrip
+            text_to_print = text_to_print.slice(line_to_print.length..text_to_print.length).lstrip
 
             # record the text that was actually printed
-            printed_text << print_line(line_to_print, max_line_width, @baseline_y)
+            printed_text << print_line(line_to_print, max_line_width, @baseline_y, do_the_print)
 
             # move to the next line
             @baseline_y -= (@line_height + @leading)
           end
-          
-          @text = printed_text.join("\n")
-        end
 
-        private
+          remaining_text = text_to_print
+          @text = printed_text.join("\n") if do_the_print
+          remaining_text
+        end
           
         # Width_limiting_y is the value of y that will be used to compute x;
         # whereas, y is the vertical position of the text baseline
@@ -140,7 +157,7 @@ module Prawn
           2 * x
         end
 
-        def print_line(line_to_print, max_line_width, baseline_y)
+        def print_line(line_to_print, max_line_width, baseline_y, do_the_print)
           # strip so that trailing white space doesn't interfere with alignment
           line_to_print.rstrip!
           
@@ -164,8 +181,8 @@ module Prawn
           end
           
           y = baseline_y + @center[1]
-          
-          @document.text(line_to_print, :at => [x, y], :kerning => @kerning)
+
+          @document.text(line_to_print, :at => [x, y], :kerning => @kerning) if do_the_print
           
           line_to_print
         end

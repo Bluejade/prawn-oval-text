@@ -25,6 +25,12 @@ describe "Text::Oval with text than can fit in the oval" do
     oval_text.render
     oval_text.text.gsub("\n", " ").should == @text.strip
   end
+  
+  it "render should return an empty string because no text remains unprinted" do
+    @options[:overflow] = :truncate
+    oval_text = Prawn::Document::Text::Oval.new(@text, @options)
+    oval_text.render.should == ""
+  end
 
   it "should be truncated when the leading is set high enough to prevent all the lines from being printed" do
     @options[:leading] = 40
@@ -57,7 +63,7 @@ end
 describe "Text::Oval with longer text than can fit in the oval" do
   before(:each) do
     create_pdf    
-    @text = "Oh hai text oval. " * 100
+    @text = "Oh hai text oval. " * 15
     @options = {
       :align => :left,
       :width => 162.0,
@@ -70,25 +76,51 @@ describe "Text::Oval with longer text than can fit in the oval" do
   end
   
   context "truncated overflow" do
-    it "should not display ellipses" do
+    before(:each) do
       @options[:overflow] = :truncate
-      oval_text = Prawn::Document::Text::Oval.new(@text, @options)
-      oval_text.render
-      oval_text.text.should_not =~ /\.\.\./
+      @oval_text = Prawn::Document::Text::Oval.new(@text, @options)
+    end
+    it "should not display ellipses" do
+      @oval_text.render
+      @oval_text.text.should_not =~ /\.\.\./
     end
     it "should be truncated" do
-      @options[:overflow] = :truncate
-      oval_text = Prawn::Document::Text::Oval.new(@text, @options)
-      oval_text.render
-      oval_text.text.gsub("\n", " ").should_not == @text.strip
+      @oval_text.render
+      @oval_text.text.gsub("\n", " ").should_not == @text.strip
+    end
+    it "render should not return an empty string because some text remains unprinted" do
+      @oval_text.render.should_not == ""
     end
   end
   
   context "ellipses overflow" do
+    before(:each) do
+      @options[:overflow] = :ellipses
+      @oval_text = Prawn::Document::Text::Oval.new(@text, @options)
+    end
     it "should display ellipses" do
-      oval_text = Prawn::Document::Text::Oval.new(@text, @options)
-      oval_text.render
-      oval_text.text.should =~ /\.\.\./
+      @oval_text.render
+      @oval_text.text.should =~ /\.\.\./
+    end
+    it "render should not return an empty string because some text remains unprinted" do
+      @options[:overflow] = :ellipses
+      @oval_text = Prawn::Document::Text::Oval.new(@text, @options)
+      @oval_text.render.should_not == ""
+    end
+  end
+
+  context "shrink_to_fit overflow" do
+    before(:each) do
+      @options[:overflow] = :shrink_to_fit
+      @options[:min_font_size] = 2
+      @oval_text = Prawn::Document::Text::Oval.new(@text, @options)
+    end
+    it "should display the entire text" do
+      @oval_text.render
+      @oval_text.text.gsub("\n", " ").should == @text.strip
+    end
+    it "render should return an empty string because no text remains unprinted" do
+      @oval_text.render.should == ""
     end
   end
   
