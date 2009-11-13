@@ -9,8 +9,6 @@ require 'examples/example_helper'
 require 'prawn/document/text/oval'
 
 Prawn::Document.generate("oval_text.pdf") do
-
-  stroke_color("555555")
   bounds_h_middle = (bounds.left + bounds.right) * 0.5
   bounds_v_middle = (bounds.bottom + bounds.top) * 0.5
   diameter = bounds.width * 0.3
@@ -31,14 +29,11 @@ Prawn::Document.generate("oval_text.pdf") do
       when 0
         # include gpq to illustrate text with descender
         text = "this is left text gpq " * 25
-        center[0] = options[:width] * 0.5
       when 1
         text = "this is center text " * 25
-        center[0] = bounds_h_middle
         options[:align] = :center
       when 2
         text = "this is right text " * 25
-        center[0] = bounds.right - options[:width] * 0.5
         options[:align] = :right
       end
       
@@ -66,10 +61,8 @@ Prawn::Document.generate("oval_text.pdf") do
       center[0] = bounds.left + options[:width] * 0.5 + (bounds.width  - options[:width]) * 0.5 * i
       center[1] = bounds.top - options[:height] * 0.5 - (bounds.height - options[:height]) * 0.33 * j
       
+      stroke_color("555555")
       stroke_circle_at(center, :radius => (options[:width] * 0.5))
-      #puts text
-      #p options
-      #puts ''
       oval_text(text, options)
     end
   end

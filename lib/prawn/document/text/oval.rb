@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-# text/oval.rb : Implements simple text ovals
+# text/oval.rb : Implements text ovals
 #
 # Copyright October 2009, Daniel Nelson. All Rights Reserved.
 #
@@ -10,7 +10,8 @@ module Prawn
   class Document
     module Text
       # Draws the requested text into an oval. When the text overflows
-      # the oval, you can either display :ellipses or :truncate the text
+      # the oval, you can display ellipses, shrink to fit, or
+      # truncate the text
       #   acceptable options:
       #
       #     :width and :height are the width and height of the
@@ -24,7 +25,7 @@ module Prawn
       #       ellipse. If :center is present, then its value overrides
       #       that provided by :at
       #
-      #     :overflow is :truncate, shrink_to_fit, or :ellipses, denoting the
+      #     :overflow is :truncate, :shrink_to_fit, or :ellipses, denoting the
       #       behavior when the amount of text exceeds the available
       #       space. Defaults to :truncate.
       #
