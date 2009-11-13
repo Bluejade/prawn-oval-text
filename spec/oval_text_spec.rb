@@ -36,7 +36,7 @@ describe "Text::Oval with text than can fit in the oval" do
     @options[:leading] = 40
     oval_text = Prawn::Document::Text::Oval.new(@text, @options)
     oval_text.render
-    oval_text.text.gsub("\n", " ").should_not == @text.strip
+    oval_text.text.gsub("\n", " ").should.not == @text.strip
   end
   
   it "printed text should be identical for all three alignments" do
@@ -82,14 +82,14 @@ describe "Text::Oval with longer text than can fit in the oval" do
     end
     it "should not display ellipses" do
       @oval_text.render
-      @oval_text.text.should_not =~ /\.\.\./
+      @oval_text.text.should.not =~ /\.\.\./
     end
     it "should be truncated" do
       @oval_text.render
-      @oval_text.text.gsub("\n", " ").should_not == @text.strip
+      @oval_text.text.gsub("\n", " ").should.not == @text.strip
     end
     it "render should not return an empty string because some text remains unprinted" do
-      @oval_text.render.should_not == ""
+      @oval_text.render.should.not == ""
     end
   end
   
@@ -105,7 +105,7 @@ describe "Text::Oval with longer text than can fit in the oval" do
     it "render should not return an empty string because some text remains unprinted" do
       @options[:overflow] = :ellipses
       @oval_text = Prawn::Document::Text::Oval.new(@text, @options)
-      @oval_text.render.should_not == ""
+      @oval_text.render.should.not == ""
     end
   end
 
