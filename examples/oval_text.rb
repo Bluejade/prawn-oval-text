@@ -58,6 +58,10 @@ Prawn::Document.generate("oval_text.pdf") do
       if j == 3 && i == 2
         options[:overflow] = :shrink_to_fit
       end
+      if j == 1 && i == 1
+        text.insert(48, "\n")
+        text.insert(55, "\n\n\n")
+      end
       
       center[0] = bounds.left + options[:width] * 0.5 + (bounds.width  - options[:width]) * 0.5 * i
       center[1] = bounds.top - options[:height] * 0.5 - (bounds.height - options[:height]) * 0.33 * j

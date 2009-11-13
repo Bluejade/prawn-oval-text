@@ -113,12 +113,12 @@ module Prawn
             line_to_print = text_that_will_fit_on_current_line(text_to_print, max_line_width)
 
             # update the remaining text to print to that which was not
-            # yet printed. strip so that leading white space doesn't
-            # interfere with alignment
-            text_to_print = text_to_print.slice(line_to_print.length..text_to_print.length).lstrip
+            # yet printed.
+            text_to_print = text_to_print.slice(line_to_print.length..text_to_print.length)
 
-            # record the text that was actually printed
-            printed_text << print_line(line_to_print, max_line_width, @baseline_y, do_the_print)
+            # Print the line (strip first to avoid interfering with alignment)
+            # Record the text that was actually printed
+            printed_text << print_line(line_to_print.strip, max_line_width, @baseline_y, do_the_print)
 
             # move to the next line
             @baseline_y -= (@line_height + @leading)
@@ -187,8 +187,6 @@ module Prawn
           line_to_print
         end
         
-        # Based upon naive_wrap, which was marked TODO:
-        # TODO: Replace with TeX optimal algorithm
         def text_that_will_fit_on_current_line(string, max_line_width)
           scan_pattern = /\S+|\s+/
           
