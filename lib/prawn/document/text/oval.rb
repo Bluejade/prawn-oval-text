@@ -40,6 +40,11 @@ module Prawn
       #       value of true will result in slower width computations
       #   
       #     :align is :center, :left, or :right. Defaults to :center
+      #
+      #     :min_font_size is the minimum font-size to use when
+      #       :overflow is set to :shrink_to_fit (ie: the font size
+      #       will not be reduced to less than this value, even if it
+      #       means that some text will be cut off). Defaults to 5
 
       # +text+ must be UTF8-encoded.
       #
@@ -50,6 +55,7 @@ module Prawn
       # Provides oval shaped text capacity
       #
       class Oval #:nodoc:
+        VERSION = '0.3'
         def initialize(text,options={})
           Prawn.verify_options([:for, :width, :height, :crop, :at, :center,
                                 :overflow, :leading, :kerning, :align, :min_font_size], options)

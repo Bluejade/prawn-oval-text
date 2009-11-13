@@ -18,7 +18,7 @@ where acceptable options are
 
 - :center is a two element array denoting the center of the ellipse. If :center is present, then its value overrides that provided by :at.
 
-- :overflow is either :truncate or :ellipses, denoting the behavior when the amount of text exceeds the available space. Defaults to :truncate.
+- :overflow is :truncate, :shrink_to_fit, or :ellipses, denoting the behavior when the amount of text exceeds the available space. Defaults to :truncate. If :shrink_to_fit, then the font size is decreased
 
 - :crop denotes the space between top of the oval and the first line. It is used to push the starting line lower in the circle when the combination of oval size and font size result in only a few characters being displayable on the very top line.
 
@@ -28,6 +28,12 @@ where acceptable options are
 
 - :align is :center, :left, or :right. Defaults to :center.
 
+- :min_font_size is the minimum font-size to use when :overflow is set to :shrink_to_fit (ie: the font size will not be reduced to less than this value, even if it means that some text will be cut off). Defaults to 5
+
 = Example
 
 {http://mindlev.wordpress.com/files/2009/10/oval_text.pdf}[http://mindlev.wordpress.com/files/2009/10/oval_text.pdf]
+
+= Changelog
+
+0.3 - added shrink_to_fit overflow option. fixed so can work with new lines in the text
