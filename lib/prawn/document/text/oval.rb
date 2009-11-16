@@ -109,7 +109,7 @@ module Prawn
           # start printing text some distance below the top of the
           # ellipse, otherwise, there may not be enough space to
           # display much text, which looks bad
-          @baseline_y = @vertical_radius - @crop - @line_height
+          @baseline_y = @vertical_radius - @crop - @line_height + @descender
 
           # while there is text remaining to display, and the bottom
           # of the next line does not extend below the bottom of the ellipse
