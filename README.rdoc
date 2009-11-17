@@ -24,7 +24,7 @@ where acceptable options are
 
 - :leading is the amount of space between lines. Defaults to 0.
 
-- :kerning is a boolean. Defaults to false. Note that a value of true will result in slower width computations.
+- :kerning is a boolean. Defaults to true. Note that if kerning is on, it will result in slower width computations
 
 - :align is :center, :left, or :right. Defaults to :center.
 
@@ -37,3 +37,5 @@ where acceptable options are
 = Changelog
 
 0.3 - added shrink_to_fit overflow option. fixed so can work with new lines in the text
+
+0.3.2 - changed default kerning to true to match Prawn default

@@ -37,8 +37,9 @@ module Prawn
       #
       #     :leading is the amount of space between lines. Defaults to 0
       #
-      #     :kerning is a boolean. Defaults to false. Note that a
-      #       value of true will result in slower width computations
+      #     :kerning is a boolean. Defaults to true. Note that if
+      #       kerning is on, it will result in slower width
+      #       computations
       #   
       #     :align is :center, :left, or :right. Defaults to :center
       #
@@ -56,7 +57,7 @@ module Prawn
       # Provides oval shaped text capacity
       #
       class Oval #:nodoc:
-        VERSION = '0.3'
+        VERSION = '0.3.2'
         def initialize(text,options={})
           Prawn.verify_options([:for, :width, :height, :crop, :at, :center,
                                 :overflow, :leading, :kerning, :align, :min_font_size], options)
@@ -70,7 +71,7 @@ module Prawn
           @center            = options[:center] if options[:center]
           @overflow          = options[:overflow] || :truncate
           @leading           = options[:leading] || 0
-          @kerning           = options[:kerning] || false
+          @kerning           = options[:kerning] || true
           @align             = options[:align] || :center
           @min_font_size     = options[:min_font_size] || 5
         end
