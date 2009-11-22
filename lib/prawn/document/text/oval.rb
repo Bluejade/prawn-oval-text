@@ -71,7 +71,7 @@ module Prawn
           @center            = options[:center] if options[:center]
           @overflow          = options[:overflow] || :truncate
           @leading           = options[:leading] || 0
-          @kerning           = options[:kerning] || true
+          @kerning           = options[:kerning].nil? ? true : options[:kerning]
           @align             = options[:align] || :center
           @min_font_size     = options[:min_font_size] || 5
         end
