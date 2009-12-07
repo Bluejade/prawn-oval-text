@@ -4,11 +4,11 @@ Provides capacity for drawing ellipse and circle shaped text.
 
 = Usage
 
-  require 'prawn/document/text/oval'
+  require 'prawn/text/oval'
 
 then
 
-  oval_text(string, options)
+  text_oval(string, options)
 
 where acceptable options are
 
@@ -39,3 +39,5 @@ where acceptable options are
 0.3 - added shrink_to_fit overflow option. fixed so can work with new lines in the text
 
 0.3.2 - changed default kerning to true to match Prawn default
+
+0.4.0 - rewrote as descendent of newly rewritten Prawn::Text::Box. notice change of oval_text method to text_oval
