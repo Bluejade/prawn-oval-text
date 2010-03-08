@@ -55,8 +55,9 @@ module Prawn
 
     # Provides oval shaped text capacity
     #
-    class Oval < Box #:nodoc:
-      VERSION = '0.4.0'
+    class Oval < Prawn::Text::Box #:nodoc:
+      # version corresponds to the version of Prawn to which this was developed
+      VERSION = '0.9.0'
 
       def valid_options
         super.concat([:crop, :center])
@@ -82,9 +83,11 @@ module Prawn
 
       private
 
-      def _render(remaining_text)
+      def _render(text)
+        @text = nil
+        remaining_text = text
         @line_height = @document.font.height
-        @descender   = @document.font.descender.abs
+        @descender   = @document.font.descender
         @ascender    = @document.font.ascender
 
         # the crop lets us start printing text some distance below the
@@ -98,12 +101,12 @@ module Prawn
               remaining_text.length > 0 &&
               width_limiting_y > -@vertical_radius
           @width = compute_max_line_width(@horizontal_radius, @vertical_radius, width_limiting_y)
-          line_to_print = @wrap_block.call(remaining_text.first_line,
-                                           :document => @document,
-                                           :kerning => @kerning,
-                                           :size => @font_size,
-                                           :width => @width)
-          remaining_text = remaining_text.slice(line_to_print.length..
+          line_to_print = @line_wrap.wrap_line(remaining_text.first_line,
+                                               :document => @document,
+                                               :kerning => @kerning,
+                                               :width => @width)
+
+          remaining_text = remaining_text.slice(@line_wrap.consumed_char_count..
                                                 remaining_text.length)
           print_ellipses = (@overflow == :ellipses && last_line? &&
                             remaining_text.length > 0)
