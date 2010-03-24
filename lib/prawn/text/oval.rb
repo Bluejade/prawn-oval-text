@@ -73,6 +73,7 @@ module Prawn
         @center            = options[:center] if options[:center]
         @at                = [@center[0] - @horizontal_radius,
                               @center[1] + @vertical_radius]
+        @original_x = @at[0]
         @align             = options[:align] || :center
         @vertical_align    = :top
       end
@@ -101,6 +102,7 @@ module Prawn
               remaining_text.length > 0 &&
               width_limiting_y > -@vertical_radius
           @width = compute_max_line_width(@horizontal_radius, @vertical_radius, width_limiting_y)
+          @at[0] = @original_x + @horizontal_radius - @width * 0.5
           line_to_print = @line_wrap.wrap_line(remaining_text.first_line,
                                                :document => @document,
                                                :kerning => @kerning,

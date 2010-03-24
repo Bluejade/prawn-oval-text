@@ -4,5 +4,5 @@ $LOAD_PATH.unshift File.join(File.dirname(__FILE__),
 $LOAD_PATH.unshift File.join(File.dirname(__FILE__),
                              '..', 'vendor', 'prawn-core', 'lib')
 
-require 'prawn/core'
+require 'prawn'
 Prawn.debug = true
