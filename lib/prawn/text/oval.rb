@@ -57,7 +57,7 @@ module Prawn
     #
     class Oval < Prawn::Text::Box #:nodoc:
       # version corresponds to the version of Prawn to which this was developed
-      VERSION = '0.9.0'
+      VERSION = '0.10.0'
 
       def valid_options
         super.concat([:crop, :center])
@@ -82,9 +82,7 @@ module Prawn
         @horizontal_radius * 2
       end
 
-      private
-
-      def _render(text)
+      def wrap(text)
         @text = nil
         remaining_text = text
         @line_height = @document.font.height
@@ -101,7 +99,8 @@ module Prawn
         while remaining_text &&
               remaining_text.length > 0 &&
               width_limiting_y > -@vertical_radius
-          @width = compute_max_line_width(@horizontal_radius, @vertical_radius, width_limiting_y)
+          @width = compute_max_line_width(@horizontal_radius, @vertical_radius,
+                                          width_limiting_y)
           @at[0] = @original_x + @horizontal_radius - @width * 0.5
           line_to_print = @line_wrap.wrap_line(remaining_text.first_line,
                                                :document => @document,
@@ -110,9 +109,10 @@ module Prawn
 
           remaining_text = remaining_text.slice(@line_wrap.consumed_char_count..
                                                 remaining_text.length)
-          print_ellipses = (@overflow == :ellipses && last_line? &&
+          include_ellipses = (@overflow == :ellipses && last_line? &&
                             remaining_text.length > 0)
-          printed_text << print_line(line_to_print, print_ellipses)
+          printed_text << draw_line(line_to_print, @line_wrap.width, 0,
+                                    include_ellipses)
           @baseline_y -= (@line_height + @leading)
         end
 
@@ -121,6 +121,8 @@ module Prawn
         remaining_text
       end
       
+      private
+
       # Width_limiting_y is the value of y that will be used to compute x;
       # whereas, y is the vertical position of the text baseline
       def width_limiting_y
