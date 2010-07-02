@@ -11,7 +11,11 @@ Prawn::Document.generate("text_oval.pdf") do
       # gqpy to show descender relative to outer circle
       text = "this is left gqpy " * 20
     when 1
-      text = "this is center gqpy " * 20
+      if j == 2
+        text = "this is justify gqpy " * 20
+      else
+        text = "this is center gqpy " * 20
+      end
     when 2
       text = "this is right gqpy " * 20
     end
@@ -42,6 +46,7 @@ Prawn::Document.generate("text_oval.pdf") do
     when 1
       options[:align] = :center
       options[:valign] = :center if j == 0
+      options[:align] = :justify if j == 2
     when 2
       options[:align] = :right
       options[:valign] = :bottom if j == 0

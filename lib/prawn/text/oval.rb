@@ -40,7 +40,7 @@ module Prawn
     #       kerning is on, it will result in slower width
     #       computations
     #   
-    #     :align is :center, :left, or :right. Defaults to :center
+    #     :align is :center, :left, :right, or :justify. Defaults to :center
     #
     #     :min_font_size is the minimum font-size to use when
     #       :overflow is set to :shrink_to_fit (ie: the font size
@@ -57,7 +57,7 @@ module Prawn
     #
     class Oval < Prawn::Text::Box #:nodoc:
       # version corresponds to the version of Prawn to which this was developed
-      VERSION = '0.10.0'
+      VERSION = '0.10.2'
 
       def valid_options
         super.concat([:crop, :center])
@@ -111,7 +111,7 @@ module Prawn
                                                 remaining_text.length)
           include_ellipses = (@overflow == :ellipses && last_line? &&
                             remaining_text.length > 0)
-          printed_text << draw_line(line_to_print, @line_wrap.width, 0,
+          printed_text << draw_line(line_to_print, @line_wrap.width, word_spacing_for_this_line,
                                     include_ellipses)
           @baseline_y -= (@line_height + @leading)
         end
@@ -119,6 +119,33 @@ module Prawn
         @text = printed_text.join("\n") if @inked
           
         remaining_text
+      end
+
+      def draw_line(line_to_print, line_width=0, word_spacing=0, include_ellipses=false) #:nodoc:
+        insert_ellipses(line_to_print) if include_ellipses
+
+        case(@align)
+        when :left
+          x = @at[0]
+        when :center, :justify
+          line_width = @width if @align == :justify && word_spacing > 0
+          x = @at[0] + @width * 0.5 - line_width * 0.5
+        when :right
+          x = @at[0] + @width - line_width
+        end
+
+        y = @at[1] + @baseline_y
+
+        if @inked
+          @document.word_spacing(word_spacing) {
+            @document.character_spacing(@character_spacing) {
+              @document.draw_text!(line_to_print, :at => [x, y],
+                                   :kerning => @kerning)
+            }
+          }
+        end
+
+        line_to_print
       end
       
       private

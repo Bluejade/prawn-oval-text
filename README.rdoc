@@ -43,3 +43,5 @@ where acceptable options are
 0.4.0 - rewrote as descendent of newly rewritten Prawn::Text::Box. notice change of oval_text method to text_oval
 
 0.10.0 - updated to reflect changes in Prawn::Text developer API
+
+0.10.2 - added :justify as align option
