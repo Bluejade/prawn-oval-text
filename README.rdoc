@@ -45,3 +45,5 @@ where acceptable options are
 0.10.0 - updated to reflect changes in Prawn::Text developer API
 
 0.10.2 - added :justify as align option
+
+2011-02-14 - incorporated Bundler. I must have been linked to master when I produced this (now avoided by use of Bundler) because this was failing at Prawn 0.10.2 because @character_spacing was not set by Text::Box. updated license to MIT license

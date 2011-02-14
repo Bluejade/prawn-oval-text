@@ -1,14 +1,18 @@
 # encoding: utf-8
+
 require "rubygems"
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'vendor', 'prawn', 'lib'))
+require "bundler"
+Bundler.setup
 
+$LOAD_PATH.unshift File.join(File.dirname(__FILE__), "..", "lib")
 require "prawn"
-
-Prawn.debug = true
 
 require "test/spec"
 require "mocha"
+require "pdf/reader"
+require "pdf/inspector"
+
+Prawn.debug = true
 
 def create_pdf(klass=Prawn::Document)
   @pdf = klass.new(:left_margin   => 0,

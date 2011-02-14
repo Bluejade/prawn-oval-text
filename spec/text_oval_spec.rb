@@ -1,12 +1,30 @@
 # encoding: utf-8
-
 require File.join(File.expand_path(File.dirname(__FILE__)), "spec_helper")
 
 require 'prawn/text/oval'
 
+describe "Text::Oval" do
+  it "should print text" do
+    create_pdf
+    options = {
+      :width => 162.0,
+      :height => 162.0,
+      :center => [81.0, 639.0],
+      :crop => 0,
+      :document => @pdf
+    }
+    text = "Hello world"
+    text_oval = Prawn::Text::Oval.new(text, options)
+    text_oval.render
+    text = PDF::Inspector::Text.analyze(@pdf.render)
+    text.strings[0].should == "Hello"
+    text.strings[1].should == "world"
+  end
+end
+
 describe "Text::Oval with text than can fit in the oval" do
   before(:each) do
-    create_pdf    
+    create_pdf
     @text = "Oh hai text oval. " * 10
     @options = {
       :width => 162.0,
@@ -16,13 +34,13 @@ describe "Text::Oval with text than can fit in the oval" do
       :document => @pdf
     }
   end
-  
+
   it "printed text should match requested text, except for trailing or leading white space and that spaces may be replaced by newlines" do
     text_oval = Prawn::Text::Oval.new(@text, @options)
     text_oval.render
     text_oval.text.gsub("\n", " ").should == @text.strip
   end
-  
+
   it "render should return an empty string because no text remains unprinted" do
     text_oval = Prawn::Text::Oval.new(@text, @options)
     text_oval.render.should == ""
@@ -34,18 +52,18 @@ describe "Text::Oval with text than can fit in the oval" do
     text_oval.render
     text_oval.text.gsub("\n", " ").should.not == @text.strip
   end
-  
+
   it "printed text should be identical for all three alignments" do
     @options[:align] = :left
     text_oval = Prawn::Text::Oval.new(@text, @options)
     text_oval.render
     left_text = text_oval.text
-    
+
     @options[:align] = :center
     text_oval = Prawn::Text::Oval.new(@text, @options)
     text_oval.render
     center_text = text_oval.text
-    
+
     @options[:align] = :right
     text_oval = Prawn::Text::Oval.new(@text, @options)
     text_oval.render
@@ -58,7 +76,7 @@ end
 
 describe "Text::Oval with longer text than can fit in the oval" do
   before(:each) do
-    create_pdf    
+    create_pdf
     @text = "Oh hai text oval. " * 15
     @options = {
       :width => 162.0,
@@ -68,7 +86,7 @@ describe "Text::Oval with longer text than can fit in the oval" do
       :document => @pdf
     }
   end
-  
+
   context "truncated overflow" do
     before(:each) do
       @options[:overflow] = :truncate
@@ -86,7 +104,7 @@ describe "Text::Oval with longer text than can fit in the oval" do
       @text_oval.render.should.not == ""
     end
   end
-  
+
   context "ellipses overflow" do
     before(:each) do
       @options[:overflow] = :ellipses
@@ -116,18 +134,18 @@ describe "Text::Oval with longer text than can fit in the oval" do
       @text_oval.render.should == ""
     end
   end
-  
+
   it "printed text should be identical for all three alignments" do
     @options[:align] = :left
     text_oval = Prawn::Text::Oval.new(@text, @options)
     text_oval.render
     left_text = text_oval.text
-    
+
     @options[:align] = :center
     text_oval = Prawn::Text::Oval.new(@text, @options)
     text_oval.render
     center_text = text_oval.text
-    
+
     @options[:align] = :right
     text_oval = Prawn::Text::Oval.new(@text, @options)
     text_oval.render
@@ -140,7 +158,7 @@ end
 
 describe "Text::Oval with a single word that is longer than can fit in the oval" do
   before(:each) do
-    create_pdf    
+    create_pdf
     @text = "Ohhaitextoval" * 100
     @options = {
       :width => 162.0,
@@ -157,7 +175,7 @@ describe "Text::Oval with a single word that is longer than can fit in the oval"
     text_oval = Prawn::Text::Oval.new(@text, @options)
     text_oval.render
     full_text = text_oval.text
-    
+
     @options[:crop] = @pdf.font.height
     text_oval = Prawn::Text::Oval.new(@text, @options)
     text_oval.render
@@ -170,7 +188,7 @@ end
 
 describe "Text::Oval with a solid block of Chinese characters" do
   before(:each) do
-    create_pdf    
+    create_pdf
     @text = "写中国字" * 10
     @options = {
       :width => 162.0,
@@ -181,7 +199,7 @@ describe "Text::Oval with a solid block of Chinese characters" do
     }
     @pdf.font "#{Prawn::BASEDIR}/data/fonts/gkai00mp.ttf"
   end
-  
+
   it "printed text should match requested text, except for newlines" do
     text_oval = Prawn::Text::Oval.new(@text, @options)
     text_oval.render

@@ -138,7 +138,8 @@ module Prawn
 
         if @inked
           @document.word_spacing(word_spacing) {
-            @document.character_spacing(@character_spacing) {
+            # remove the || 0 when tying to 0.11+
+            @document.character_spacing(@character_spacing || 0) {
               @document.draw_text!(line_to_print, :at => [x, y],
                                    :kerning => @kerning)
             }
