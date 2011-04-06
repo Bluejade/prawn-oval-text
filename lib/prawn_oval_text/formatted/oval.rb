@@ -10,8 +10,29 @@ module Prawn
   module Text
     module Formatted
 
-      def formatted_text_oval(text, options={})
-        Text::Formatted::Oval.new(text, options.merge(:document => self)).render
+      # Draws the requested formatted text into an oval.
+      #
+      # == Example
+      #
+      #   formatted_text_oval([{ :text => "hello" },
+      #                        { :text => "world",
+      #                          :direction => :rtl,
+      #                          :styles => [:bold, :italic],
+      #                          :color => "0000ff" }])
+      #
+      # == Options
+      #
+      # Accepts the same options as #text_oval, and the formatted text array is
+      # the same as for #formatted_text_box, with one warning: The baseline_y
+      # within the oval determines how much width is available to that
+      # line. Whereas, with text boxes, text fragments are free to change height
+      # within a line (via the size or font options), for line width
+      # calculations in oval text, we use the font settings in place at the time
+      # the text is drawn to the oval. So, changing font to a much larger font or
+      # increasing font size within a text fragment will not produce good results.
+      #
+      def formatted_text_oval(array, options={})
+        Text::Formatted::Oval.new(array, options.merge(:document => self)).render
       end
 
       # Provides oval shaped text capacity

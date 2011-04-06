@@ -12,7 +12,11 @@ And:
 
   text_oval(string, options)
 
-where acceptable options are
+Or:
+
+  formatted_text_oval(formatted_text_array, options)
+
+Where acceptable options are:
 
 - :width and :height are the width and height of the ellipse, respectively. If they are equal, then the shape is a circle.
 
@@ -32,6 +36,8 @@ where acceptable options are
 
 - :min_font_size is the minimum font-size to use when :overflow is set to :shrink_to_fit (ie: the font size will not be reduced to less than this value, even if it means that some text will be cut off). Defaults to 5
 
+- see Prawn::Text::Formatted#formatted_text_box developer documentation for details on the formatted text array structure
+
 = Example
 
 {https://github.com/downloads/Bluejade/prawn-oval-text/text_oval.pdf}[https://github.com/downloads/Bluejade/prawn-oval-text/text_oval.pdf]
@@ -50,4 +56,4 @@ where acceptable options are
 
 2011-02-14 - incorporated Bundler. I must have been linked to master when I produced this (now avoided by use of Bundler) because this was failing at Prawn 0.10.2 because @character_spacing was not set by Text::Box. updated license to MIT license
 
-0.11.1 - added gemspec and published as prawn_oval_text. requires Prawn 0.11.1
+2011-04-05 - updated for Prawn 0.11.1. added support for formatted text via Prawn::Text::Formatted::Oval and formatted_text_oval. added gemspec and published as prawn_oval_text
