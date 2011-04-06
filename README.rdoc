@@ -28,7 +28,7 @@ where acceptable options are
 
 - :kerning is a boolean. Defaults to true. Note that if kerning is on, it will result in slower width computations
 
-- :align is :center, :left, or :right. Defaults to :center.
+- :align is :center, :left, :right, or :justify. Defaults to :center.
 
 - :min_font_size is the minimum font-size to use when :overflow is set to :shrink_to_fit (ie: the font size will not be reduced to less than this value, even if it means that some text will be cut off). Defaults to 5
 
