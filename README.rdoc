@@ -4,9 +4,11 @@ Provides capacity for drawing ellipse and circle shaped text.
 
 = Usage
 
-  require 'prawn/text/oval'
+Install the prawn_oval_text gem, then:
 
-then
+  require 'prawn_oval_text'
+
+And:
 
   text_oval(string, options)
 
