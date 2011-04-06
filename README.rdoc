@@ -32,7 +32,7 @@ where acceptable options are
 
 = Example
 
-{http://mindlev.wordpress.com/files/2009/10/oval_text.pdf}[http://mindlev.wordpress.com/files/2009/10/oval_text.pdf]
+{https://github.com/downloads/Bluejade/prawn-oval-text/text_oval.pdf}[https://github.com/downloads/Bluejade/prawn-oval-text/text_oval.pdf]
 
 = Changelog
 
