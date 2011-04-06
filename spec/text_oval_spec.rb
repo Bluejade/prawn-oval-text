@@ -1,8 +1,6 @@
 # encoding: utf-8
 require File.join(File.expand_path(File.dirname(__FILE__)), "spec_helper")
 
-require 'prawn/text/oval'
-
 describe "Text::Oval" do
   it "should print text" do
     create_pdf
@@ -92,30 +90,11 @@ describe "Text::Oval with longer text than can fit in the oval" do
       @options[:overflow] = :truncate
       @text_oval = Prawn::Text::Oval.new(@text, @options)
     end
-    it "should not display ellipses" do
-      @text_oval.render
-      @text_oval.text.should.not =~ /\.\.\./
-    end
     it "should be truncated" do
       @text_oval.render
       @text_oval.text.gsub("\n", " ").should.not == @text.strip
     end
     it "render should not return an empty string because some text remains unprinted" do
-      @text_oval.render.should.not == ""
-    end
-  end
-
-  context "ellipses overflow" do
-    before(:each) do
-      @options[:overflow] = :ellipses
-      @text_oval = Prawn::Text::Oval.new(@text, @options)
-    end
-    it "should display ellipses" do
-      @text_oval.render
-      @text_oval.text.should =~ /\.\.\./
-    end
-    it "render should not return an empty string because some text remains unprinted" do
-      @text_oval = Prawn::Text::Oval.new(@text, @options)
       @text_oval.render.should.not == ""
     end
   end

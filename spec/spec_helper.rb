@@ -4,13 +4,16 @@ require "rubygems"
 require "bundler"
 Bundler.setup
 
-$LOAD_PATH.unshift File.join(File.dirname(__FILE__), "..", "lib")
 require "prawn"
-
 require "test/spec"
 require "mocha"
 require "pdf/reader"
 require "pdf/inspector"
+
+$LOAD_PATH.unshift File.join(File.dirname(__FILE__), "..", "lib")
+require 'prawn_oval_text'
+
+
 
 Prawn.debug = true
 

@@ -1,8 +1,7 @@
 # encoding: utf-8
 #
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "..", ".."))
-require 'examples/example_helper'
-require 'prawn/text/oval'
+require File.expand_path(File.join(File.dirname(__FILE__),
+                                   %w[.. example_helper]))
 
 Prawn::Document.generate("text_oval.pdf") do
   def get_string(i, j)      
@@ -69,7 +68,7 @@ Prawn::Document.generate("text_oval.pdf") do
       options[:center][0] = bounds.left + options[:width] * 0.5 + (bounds.width  - options[:width]) * 0.5 * i
       options[:center][1] = bounds.top - options[:height] * 0.5 - (bounds.height - options[:height]) * 0.33 * j
       oval = Prawn::Text::Oval.new(get_string(i, j), options)
-      stroke_circle_at(options[:center], :radius => options[:width] / 2)
+      stroke_circle(options[:center], options[:width] / 2)
       oval.render
     end
   end
