@@ -11,7 +11,7 @@ Prawn::Document.generate("text_oval.pdf") do
       text = "this is left gqpy " * 20
     when 1
       if j == 2
-        text = "this is justify gqpy " * 20
+        text = "this is justify gqpy " * 7
       else
         text = "this is center gqpy " * 20
       end
